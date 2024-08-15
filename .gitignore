@@ -1,0 +1,23 @@
+# Node.js
+node_modules/
+
+# Fichiers de log
+*.log
+
+# Répertoires de build
+dist/
+build/
+
+# Fichiers de configuration locaux
+.env
+
+# Fichiers de configuration d'éditeur
+.vscode/
+.idea/
+
+# Système d'exploitation
+.DS_Store
+Thumbs.db
+
+# Fichiers sensibles
+config/appstate.json
