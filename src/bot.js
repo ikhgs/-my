@@ -1,3 +1,4 @@
+// bot.js
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
@@ -21,10 +22,13 @@ const apiClient = axios.create({
 // Fonction pour envoyer un message et obtenir une réponse
 const sendMessage = async (message) => {
   try {
+    console.log('Envoi du message:', message);
+    console.log('Headers envoyés:', apiClient.defaults.headers);
     const response = await apiClient.get('', { params: { ask: message } });
+    console.log('Réponse de l\'API:', response.data);
     return response.data; // Retourner la réponse de l'API
   } catch (error) {
-    console.error('Erreur lors de l\'envoi du message:', error);
+    console.error('Erreur lors de l\'envoi du message:', error.response ? error.response.data : error.message);
     return 'Erreur dans l\'envoi du message.';
   }
 };
@@ -33,12 +37,16 @@ const sendMessage = async (message) => {
 const handleMessage = async (incomingMessage) => {
   console.log('Message reçu:', incomingMessage);
 
-  // Obtenez une réponse de l'API
-  const apiResponse = await sendMessage(incomingMessage);
-  
-  // Retourner la réponse reçue de l'API
-  console.log('Réponse de l\'API:', apiResponse);
-  return apiResponse;
+  if (typeof incomingMessage === 'string' && incomingMessage.trim().length > 0) {
+    // Obtenez une réponse de l'API
+    const apiResponse = await sendMessage(incomingMessage);
+    
+    // Retourner la réponse reçue de l'API
+    console.log('Réponse de l\'API:', apiResponse);
+    return apiResponse;
+  } else {
+    return 'Message invalide.';
+  }
 };
 
 // Exporter la fonction pour l'utiliser dans le serveur
